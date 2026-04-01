@@ -1,32 +1,31 @@
 import axios from 'axios';
 
-const BASE = 'http://localhost:8080/api';
+
+// const BASE = process.env.REACT_APP_API_BASE_URL;
+const BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 axios.defaults.withCredentials = true;
 
 // attach token to every request automatically
-axios.interceptors.request.use(config => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+const api = axios.create({
+  baseURL: BASE,
+  withCredentials: true
 });
 
-axios.interceptors.response.use(
-    res => res,
-    err => {
-        if (err.response?.status === 401) {
-            localStorage.removeItem('email');
-            window.location.href = '/login';
-        }
-        return Promise.reject(err);
+api.interceptors.response.use(
+  res => res,
+  err => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem('email');
+      window.location.href = '/login';
     }
+    return Promise.reject(err);
+  }
 );
 
 export const registerSendOtp = (data) => axios.post(`${BASE}/auth/register/send-otp`, data);
 export const registerVerifyOtp = (data) => axios.post(`${BASE}/auth/register/verify-otp`, data);
 export const loginSendOtp = (data) => axios.post(`${BASE}/auth/login/send-otp`, data);
-export const loginVerifyOtp = (data) => axios.post(`${BASE}/auth/login/verify-otp`, data);
+export const loginVerifyOtp = (data) => api.post('/auth/login/verify-otp', data);
 export const logout = () => axios.post(`${BASE}/auth/logout`);
 export const getIncidents = () => axios.get(`${BASE}/incidents`);
 export const getUptime = (id) => axios.get(`${BASE}/endpoints/${id}/uptime`);

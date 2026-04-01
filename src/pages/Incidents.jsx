@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getIncidents } from '../api';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 export default function Incidents() {
   const [incidents, setIncidents] = useState([]);
@@ -16,9 +17,9 @@ export default function Incidents() {
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+    <div style={{ minHeight: '100vh', background: '#f5f5f5', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px' }}>
+      <div className="content-container" style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px' }}>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
           <button onClick={() => navigate('/')} style={{
@@ -97,6 +98,9 @@ export default function Incidents() {
           </div>
         ))}
       </div>
+
+      <Footer />
+
     </div>
   );
 }

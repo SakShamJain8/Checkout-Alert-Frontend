@@ -4,6 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 import { getHistory, getEndpoints, getUptime } from '../api';
 import Navbar from '../components/Navbar';
 import StatusBadge from '../components/StatusBadge';
+import Footer from '../components/Footer';
 
 export default function EndpointDetail() {
   const { id } = useParams();
@@ -39,9 +40,9 @@ export default function EndpointDetail() {
   }));
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+    <div style={{ minHeight: '100vh', background: '#f5f5f5', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px' }}>
+      <div className="content-container" style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px' }}>
 
         <button onClick={() => navigate('/')} style={{
           border: 'none', background: 'none', cursor: 'pointer',
@@ -139,6 +140,9 @@ export default function EndpointDetail() {
         </div>
 
       </div>
+
+      <Footer />
+
     </div>
   );
 }

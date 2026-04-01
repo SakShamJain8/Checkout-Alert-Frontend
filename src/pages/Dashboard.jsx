@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import StatusBadge from '../components/StatusBadge';
 import PremiumModal from '../components/PremiumModal';
 import AddEndpointModal from '../components/AddEndpointModal';
+import Footer from '../components/Footer';
 
 export default function Dashboard() {
   const [endpoints, setEndpoints] = useState([]);
@@ -82,31 +83,35 @@ export default function Dashboard() {
   }).length;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+    <div style={{ minHeight: '100vh', background: '#f5f5f5', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px' }}>
+      <div className="content-container" style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px' }}>
 
         {/* stats row */}
-        <div style={{
+        <div className="stats-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: '12px', marginBottom: '24px'
         }}>
           {[
-            { label: 'Total endpoints', value: total },
-            { label: 'Active', value: active },
-            { label: 'Paused', value: paused },
-            { label: 'Down now', value: down, alert: down > 0 }
+            { label: 'Total endpoints', value: total, icon: '📊' },
+            { label: 'Active', value: active, icon: '✓' },
+            { label: 'Paused', value: paused, icon: '⏸' },
+            { label: 'Down now', value: down, icon: '⚠', alert: down > 0 }
           ].map(s => (
-            <div key={s.label} style={{
+            <div key={s.label} className="stat-card" style={{
               background: '#fff', borderRadius: '10px',
               border: s.alert ? '1px solid #fca5a5' : '1px solid #e5e5e5',
               padding: '16px 20px'
             }}>
-              <div style={{ fontSize: '12px', color: '#888', marginBottom: '4px' }}>
+              <div style={{ fontSize: '12px', color: '#888', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ 
+                  fontSize: '14px',
+                  color: s.label === 'Active' ? '#22c55e' : s.label === 'Paused' ? '#eab308' : s.label === 'Down now' ? '#dc2626' : 'inherit'
+                }}>{s.icon}</span>
                 {s.label}
               </div>
-              <div style={{
+              <div className="stat-value" style={{
                 fontSize: '28px', fontWeight: '600',
                 color: s.alert ? '#dc2626' : '#1a1a1a'
               }}>
@@ -186,6 +191,7 @@ export default function Dashboard() {
 
           return (
             <div key={ep.id}
+              className="endpoint-card"
               onClick={() => navigate(`/endpoint/${ep.id}`)}
               style={{
                 background: '#fff', borderRadius: '10px',
@@ -261,6 +267,8 @@ export default function Dashboard() {
           );
         })}
       </div>
+
+      <Footer />
 
       {showModal && (
         <AddEndpointModal
